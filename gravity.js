@@ -9,11 +9,34 @@ function Vector3D(x, y, z) {
 	this.z = z;
 }
 
+function transformVector(v) {
+	var translatedX, translatedY, translatedZ;
+	var rotatedX, rotatedY, rotatedZ;
+
+	translatedX = v.x + panX;
+	translatedY = v.y + panY;
+	translatedZ = v.z;
+	rotatedX = translatedX;
+	rotatedY = translatedY;
+	rotatedZ = translatedZ;
+
+	rotatedX = translatedX * Math.cos(rotY / 180) + translatedZ * Math.sin(rotY / 180);
+	rotatedZ = translatedZ * Math.cos(rotY / 180) - translatedX * Math.sin(rotY / 180);
+	translatedZ = rotatedZ;
+
+	rotatedY = translatedY * Math.cos(rotX / 180) + translatedZ * Math.sin(rotX / 180);
+	rotatedZ = translatedZ * Math.cos(rotX / 180) - translatedY * Math.sin(rotX / 180);
+
+	return new Vector3D(rotatedX, rotatedY, rotatedZ);
+}
+
 function Particle(m, v, p) {
 	this.mass = m;
 	this.velocity = v;
 	this.position = p;
+	this.apparentZ = this.z;
 	this.absorb = absorbParticle;
+	this.adoptChanges = adoptChanges;
 	this.paint = paintParticle;
 	this.radius = Math.cbrt(this.mass);
 }
@@ -30,15 +53,34 @@ function absorbParticle(p) {
 	this.radius = Math.cbrt(this.mass);
 }
 
+function adoptChanges() {
+	this.position = transformVector(this.position);
+
+	var rotatedvX = this.velocity.x * Math.cos(rotY / 180) + this.velocity.z * Math.sin(rotY / 180);
+	var rotatedvZ = this.velocity.z * Math.cos(rotY / 180) - this.velocity.x * Math.sin(rotY / 180);
+	this.velocity.z = rotatedvZ;
+
+	var rotatedvY = this.velocity.y * Math.cos(rotX / 180) + this.velocity.z * Math.sin(rotY / 180);
+	rotatedvZ = this.velocity.z * Math.cos(rotX / 180) - this.velocity.y * Math.sin(rotY / 180);
+
+	this.velocity = new Vector3D(rotatedvX, rotatedvY, rotatedvZ);
+
+}
+
 function paintParticle() {
-	var dispX, dispY, dispRadius;
+	var pos = transformVector(this.position);
+	this.apparentZ = pos.z;
 
-	dispX = this.position.x * (this.position.z + 1000) * 0.0005;
-	dispY = this.position.y * (this.position.z + 1000) * 0.0005;
-	dispRadius = this.radius * (this.position.z + 500) * 0.005;
+	var dispX = pos.x * (pos.z + 1000) * 0.001;
+	var dispY = pos.y * (pos.z + 1000) * 0.001;
+	var dispRadius = this.radius * (pos.z + 250) * 0.004 + 1;
+	if (dispRadius < 0) {
+		dispRadius = 0;
+	}
 
+	var lightness = Math.floor(this.radius * 200 / 32) + 50;
 	ctx.strokeStyle = "black";
-	ctx.fillStyle = "gray";
+	ctx.fillStyle = "rgb(" + lightness + ", " + lightness + ", " + lightness + ")";
 	ctx.beginPath();
 	ctx.arc(dispX + centerX, dispY + centerY, dispRadius, 2 * Math.PI, false);
 	ctx.stroke();
