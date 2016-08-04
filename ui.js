@@ -22,8 +22,8 @@ function newParticle(m, v, p) {
 }
 
 function cloud() {
-	for (var i = 0; i < 500; i++) {
-		var angle1 = Math.random() * 2 * Math.PI;
+	for (var i = 0; i < 1000; i++) {
+		var angle1 = Math.pow(Math.random(), 3) * 2 * Math.PI;
 		var angle2 = Math.random() * 2 * Math.PI;
 		var dist = Math.pow(Math.random() * 15, 2);
 		
@@ -31,10 +31,10 @@ function cloud() {
 		var y = dist * Math.sin(angle1);
 		var z = dist * Math.cos(angle1) * Math.sin(angle2);
 
-		var vx = dist * Math.sin(angle2) / 25;
-		var vz = -dist * Math.cos(angle2) / 25;
+		var vx = Math.sqrt(dist) * Math.sin(angle2);
+		var vz = -Math.sqrt(dist) * Math.cos(angle2);
 
-		newParticle(10, new Vector3D(vx, 0, vz), new Vector3D(x, y, z));
+		newParticle(2, new Vector3D(vx, 0, vz), new Vector3D(x, y, z));
 	}
 }
 
