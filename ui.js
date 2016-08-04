@@ -5,8 +5,10 @@ var centerX;
 var centerY;
 var panX = 0;
 var panY = 0;
+var panZ = 0;
 var initPanX = 0;
 var initPanY = 0;
+var initPanZ = 0;
 var rotX = 0;
 var rotY = 0;
 var initRotX = 0;
@@ -64,22 +66,17 @@ $(document).ready(function() {
 				rotX = initRotX + e.clientY - mouseInitY;
 				rotY = initRotY + e.clientX - mouseInitX;
 			} else {
-				panX = initPanX + e.clientX - mouseInitX;
-				panY = initPanY + e.clientY - mouseInitY;
+				var panVector = new Vector3D(e.clientX - mouseInitX, e.clientY - mouseInitY, 0);
+				panVector = rotateVector(panVector, -rotX, -rotY);
+				panX = initPanX + panVector.x;
+				panY = initPanY + panVector.y;
+				panZ = initPanZ + panVector.z;
 			}
 		}
 	});
 
 	$("#canvas").mouseup(function() {
 		dragging = false;
-
-		for (var i = 0; i < particles.length; i++) {
-			particles[i].adoptChanges();
-		}
-		panX = 0;
-		panY = 0;
-		rotX = 0;
-		rotY = 0;
 	});
 
 	$("body").keydown(function(e) {

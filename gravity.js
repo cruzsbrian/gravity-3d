@@ -9,23 +9,24 @@ function Vector3D(x, y, z) {
 	this.z = z;
 }
 
-function transformVector(v) {
+function translateVector(v, x, y, z) {
 	var translatedX, translatedY, translatedZ;
+	translatedX = v.x + x;
+	translatedY = v.y + y;
+	translatedZ = v.z + z;
+
+	return new Vector3D(translatedX, translatedY, translatedZ);
+}
+
+function rotateVector(v, x, y) {
 	var rotatedX, rotatedY, rotatedZ;
 
-	translatedX = v.x + panX;
-	translatedY = v.y + panY;
-	translatedZ = v.z;
-	rotatedX = translatedX;
-	rotatedY = translatedY;
-	rotatedZ = translatedZ;
+	rotatedX = v.x * Math.cos(y / 180) + v.z * Math.sin(y / 180);
+	rotatedZ = v.z * Math.cos(y / 180) - v.x * Math.sin(y / 180);
+	v.z = rotatedZ;
 
-	rotatedX = translatedX * Math.cos(rotY / 180) + translatedZ * Math.sin(rotY / 180);
-	rotatedZ = translatedZ * Math.cos(rotY / 180) - translatedX * Math.sin(rotY / 180);
-	translatedZ = rotatedZ;
-
-	rotatedY = translatedY * Math.cos(rotX / 180) + translatedZ * Math.sin(rotX / 180);
-	rotatedZ = translatedZ * Math.cos(rotX / 180) - translatedY * Math.sin(rotX / 180);
+	rotatedY = v.y * Math.cos(x / 180) + v.z * Math.sin(x / 180);
+	rotatedZ = v.z * Math.cos(x / 180) - v.y * Math.sin(x / 180);
 
 	return new Vector3D(rotatedX, rotatedY, rotatedZ);
 }
@@ -68,7 +69,8 @@ function adoptChanges() {
 }
 
 function paintParticle() {
-	var pos = transformVector(this.position);
+	var pos = translateVector(this.position, panX, panY, panZ);
+	pos = rotateVector(pos, rotX, rotY);
 	this.apparentZ = pos.z;
 
 	var dispX = pos.x * (pos.z + 1000) * 0.001;
