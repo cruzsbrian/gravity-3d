@@ -15,6 +15,7 @@ var initRotX = 0;
 var initRotY = 0;
 var mouseInitX;
 var mouseInitY;
+var scroll = 0;
 var dragging = false;
 var rotating = false;
 
@@ -25,16 +26,16 @@ function newParticle(m, v, p) {
 
 function cloud() {
 	for (var i = 0; i < 1000; i++) {
-		var angle1 = Math.pow(Math.random(), 3) * 2 * Math.PI;
+		var angle1 = Math.random() * 2 * Math.PI;
 		var angle2 = Math.random() * 2 * Math.PI;
-		var dist = Math.pow(Math.random() * 15, 2);
+		var dist = Math.pow(Math.random(), 2) * 255;
 		
 		var x = dist * Math.cos(angle1) * Math.cos(angle2);
-		var y = dist * Math.sin(angle1);
+		var y = dist * Math.sin(angle1) / 2;
 		var z = dist * Math.cos(angle1) * Math.sin(angle2);
 
-		var vx = Math.sqrt(dist) * Math.sin(angle2);
-		var vz = -Math.sqrt(dist) * Math.cos(angle2);
+		var vx = Math.sqrt(dist) * Math.cos(angle1) * Math.sin(angle2);
+		var vz = -Math.sqrt(dist) * Math.cos(angle1) * Math.cos(angle2);
 
 		newParticle(2, new Vector3D(vx, 0, vz), new Vector3D(x, y, z));
 	}
@@ -79,6 +80,16 @@ $(document).ready(function() {
 		dragging = false;
 	});
 
+	$(window).bind("mousewheel", function(e) {
+		var panVector = new Vector3D(0, 0, e.originalEvent.wheelDelta);
+		panVector = rotateVector(panVector, -rotX, -rotY);
+		panX = initPanX + panVector.x;
+		panY = initPanY + panVector.y;
+		panZ = initPanZ + panVector.z;
+
+		initPanZ = panZ;
+	});
+
 	$("body").keydown(function(e) {
 		if (e.which == 16) {
 			rotating = true;
@@ -108,6 +119,6 @@ $(document).ready(function() {
 			paintParticles[i].paint();
 		}
 
-		console.log(panX);
+		console.log(scroll);
 	}, 15);
 });

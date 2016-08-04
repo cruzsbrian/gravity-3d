@@ -37,7 +37,6 @@ function Particle(m, v, p) {
 	this.position = p;
 	this.apparentZ = this.z;
 	this.absorb = absorbParticle;
-	this.adoptChanges = adoptChanges;
 	this.paint = paintParticle;
 	this.radius = Math.cbrt(this.mass);
 }
@@ -52,20 +51,6 @@ function absorbParticle(p) {
 
 	this.mass += p.mass;
 	this.radius = Math.cbrt(this.mass);
-}
-
-function adoptChanges() {
-	this.position = transformVector(this.position);
-
-	var rotatedvX = this.velocity.x * Math.cos(rotY / 180) + this.velocity.z * Math.sin(rotY / 180);
-	var rotatedvZ = this.velocity.z * Math.cos(rotY / 180) - this.velocity.x * Math.sin(rotY / 180);
-	this.velocity.z = rotatedvZ;
-
-	var rotatedvY = this.velocity.y * Math.cos(rotX / 180) + this.velocity.z * Math.sin(rotY / 180);
-	rotatedvZ = this.velocity.z * Math.cos(rotX / 180) - this.velocity.y * Math.sin(rotY / 180);
-
-	this.velocity = new Vector3D(rotatedvX, rotatedvY, rotatedvZ);
-
 }
 
 function paintParticle() {
