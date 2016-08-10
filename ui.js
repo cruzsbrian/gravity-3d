@@ -60,8 +60,9 @@ $(document).ready(function() {
 
 		initRotX = rotX;
 		initRotY = rotY;
-		initPanX = panX;
-		initPanY = panY;
+		initPanX = cameraPos.x;
+		initPanY = cameraPos.y;
+		initPanZ = cameraPos.z;
 
 		dragging = true;
 	});
@@ -74,10 +75,9 @@ $(document).ready(function() {
 				rotY = initRotY + e.clientX - mouseInitX;
 			} else {
 				var panVector = new Vector3D(e.clientX - mouseInitX, e.clientY - mouseInitY, 0);
-				panVector = rotateVector(panVector, -rotX, -rotY);
-				panX = initPanX + panVector.x;
-				panY = initPanY + panVector.y;
-				panZ = initPanZ + panVector.z;
+				cameraPos.x = initPanX + panVector.x;
+				cameraPos.y = initPanY + panVector.y;
+				cameraPos.z = initPanZ + panVector.z;
 			}
 		}
 	});

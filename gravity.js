@@ -62,8 +62,8 @@ function paintParticle() {
 	var zDist = cameraPos.z - pos.z;
 	var viewRange = zDist * 0.001;
 
-	var dispX = pos.x / viewRange;
-	var dispY = pos.y / viewRange;
+	var dispX = (pos.x + cameraPos.x) / viewRange;
+	var dispY = (pos.y + cameraPos.y) / viewRange;
 	console.log(dispX);
 	var dispRadius = this.radius / viewRange;
 	if (dispRadius < 0) {
