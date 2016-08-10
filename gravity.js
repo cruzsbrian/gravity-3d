@@ -54,13 +54,18 @@ function absorbParticle(p) {
 }
 
 function paintParticle() {
-	var pos = translateVector(this.position, panX, panY, panZ);
-	pos = rotateVector(pos, rotX, rotY);
+	//var pos = translateVector(this.position, panX, panY, panZ);
+	//pos = rotateVector(pos, rotX, rotY);
+	var pos = this.position;
 	this.apparentZ = pos.z;
 
-	var dispX = pos.x * (pos.z + 1000) * 0.001;
-	var dispY = pos.y * (pos.z + 1000) * 0.001;
-	var dispRadius = this.radius * (pos.z + 250) * 0.004 + 1;
+	var zDist = cameraPos.z - pos.z;
+	var viewRange = zDist * 0.001;
+
+	var dispX = pos.x / viewRange;
+	var dispY = pos.y / viewRange;
+	console.log(dispX);
+	var dispRadius = this.radius / viewRange;
 	if (dispRadius < 0) {
 		dispRadius = 0;
 	}

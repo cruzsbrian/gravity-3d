@@ -1,6 +1,8 @@
 var ctx;
 
 var particles = new Array();
+var screenWidth;
+var screenHeight;
 var centerX;
 var centerY;
 var panX = 0;
@@ -13,6 +15,8 @@ var rotX = 0;
 var rotY = 0;
 var initRotX = 0;
 var initRotY = 0;
+var cameraPos = new Vector3D(0, 0, 500);
+var cameraAngle = new Vector3D(0, 0, 0);
 var mouseInitX;
 var mouseInitY;
 var scroll = 0;
@@ -44,6 +48,8 @@ function cloud() {
 $(document).ready(function() {
 	centerX = $(window).width() / 2;
 	centerY = $(window).height() / 2;
+	screenWidth = $(window).width();
+	screenHeight = $(window).height();
 	ctx = $("#canvas")[0].getContext("2d");
 	ctx.canvas.width = window.innerWidth;
 	ctx.canvas.height = window.innerHeight;
@@ -81,13 +87,7 @@ $(document).ready(function() {
 	});
 
 	$(window).bind("mousewheel", function(e) {
-		var panVector = new Vector3D(0, 0, e.originalEvent.wheelDelta);
-		panVector = rotateVector(panVector, -rotX, -rotY);
-		panX = initPanX + panVector.x;
-		panY = initPanY + panVector.y;
-		panZ = initPanZ + panVector.z;
-
-		initPanZ = panZ;
+		cameraPos.z -= e.originalEvent.wheelDelta / 5;
 	});
 
 	$("body").keydown(function(e) {
@@ -119,6 +119,6 @@ $(document).ready(function() {
 			paintParticles[i].paint();
 		}
 
-		console.log(scroll);
+		//console.log(scroll);
 	}, 15);
 });
