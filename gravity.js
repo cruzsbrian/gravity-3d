@@ -55,8 +55,8 @@ function absorbParticle(p) {
 
 function paintParticle() {
 	//var pos = translateVector(this.position, panX, panY, panZ);
-	//pos = rotateVector(pos, rotX, rotY);
 	var pos = this.position;
+	pos = rotateVector(pos, rotX, rotY);
 	this.apparentZ = pos.z;
 
 	var zDist = cameraPos.z - pos.z;
