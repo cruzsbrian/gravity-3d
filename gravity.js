@@ -23,10 +23,10 @@ function rotateVector(v, x, y) {
 
 	rotatedX = v.x * Math.cos(y / 180) + v.z * Math.sin(y / 180);
 	rotatedZ = v.z * Math.cos(y / 180) - v.x * Math.sin(y / 180);
-	v.z = rotatedZ;
+	var z = rotatedZ;
 
-	rotatedY = v.y * Math.cos(x / 180) + v.z * Math.sin(x / 180);
-	rotatedZ = v.z * Math.cos(x / 180) - v.y * Math.sin(x / 180);
+	rotatedY = v.y * Math.cos(x / 180) + z * Math.sin(x / 180);
+	rotatedZ = z * Math.cos(x / 180) - v.y * Math.sin(x / 180);
 
 	return new Vector3D(rotatedX, rotatedY, rotatedZ);
 }
