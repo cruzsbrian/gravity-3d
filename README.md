@@ -5,3 +5,5 @@ Available here: [cruzsbrian.github.io/gravity-3d](http://cruzsbrian.github.io/gr
 Based on my [previous project](http://justfound.co/gravity) (in 2D).
 
 Thanks to [Bob Davies](https://github.com/bobbigmac) for getting me started on this project.
+
+Press space.
