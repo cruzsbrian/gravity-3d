@@ -121,4 +121,6 @@ $(document).ready(function() {
 
 		//console.log(scroll);
 	}, 15);
+	
+	cloud();
 });
