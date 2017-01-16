@@ -105,6 +105,7 @@ $(document).ready(function() {
 		}
 	});
 	
+    console.log('make cloud');
 	cloud();
 
 	var t = setInterval(function() {
