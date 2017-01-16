@@ -104,6 +104,8 @@ $(document).ready(function() {
 			rotating = false;
 		}
 	});
+	
+	cloud();
 
 	var t = setInterval(function() {
 		gravityCalc(particles);
@@ -121,6 +123,4 @@ $(document).ready(function() {
 
 		//console.log(scroll);
 	}, 15);
-	
-	cloud();
 });
